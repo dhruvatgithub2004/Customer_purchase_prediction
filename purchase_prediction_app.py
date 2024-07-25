@@ -4,7 +4,7 @@ import numpy as np
 
 # Load the trained model and scaler
 try:
-    with open('Customer_Purchase_model.pkl', 'rb') as model_file:
+    with open('Customer_Purchase_model1.pkl', 'rb') as model_file:
         model = pickle.load(model_file)
     with open('Customer_Scaler.pkl', 'rb') as scaler_file:
         scaler = pickle.load(scaler_file)
