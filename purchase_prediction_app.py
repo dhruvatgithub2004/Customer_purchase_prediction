@@ -28,8 +28,8 @@ def main():
     discounts_availed = st.number_input('Discounts Availed', min_value=0, max_value=5, value=0)
 
     # Create input data
-    input_data = np.array([['Age', 'Gender', 'AnnualIncome', 'NumberOfPurchases', 'ProductCategory',
-       'TimeSpentOnWebsite', 'LoyaltyProgram', 'DiscountsAvailed']])
+    input_data = np.array([[age, gender, annual_income, number_of_purchases, product_category,
+                            time_spent_on_website, loyalty_program, discounts_availed]])
 
     if scaler is not None and model is not None:
         try:
