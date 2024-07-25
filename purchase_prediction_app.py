@@ -4,7 +4,7 @@ import numpy as np
 
 # Load the trained model and scaler
 try:
-    with open('Customer_Purchase_model1.pkl', 'rb') as model_file:
+    with open('Customer_Purchase_model.pkl', 'rb') as model_file:
         model = pickle.load(model_file)
     with open('Customer_Scaler.pkl', 'rb') as scaler_file:
         scaler = pickle.load(scaler_file)
@@ -32,22 +32,21 @@ def main():
                             time_spent_on_website, loyalty_program, discounts_availed]])
 
     if scaler is not None and model is not None:
-        # Scale input data
-        scaled_input_data = scaler.transform(input_data)
-
-        # Prediction
-        if st.button('Predict'):
-            try:
+        try:
+            # Scale input data
+            scaled_input_data = scaler.transform(input_data)
+            
+            # Prediction
+            if st.button('Predict'):
                 prediction = model.predict(scaled_input_data)
                 st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
-            except Exception as e:
-                st.error(f"Error during prediction: {e}")
+        except Exception as e:
+            st.error(f"Error during prediction: {e}")
     else:
         st.error("Model or scaler not loaded correctly.")
 
 if __name__ == "__main__":
     main()
-
 
 
 
