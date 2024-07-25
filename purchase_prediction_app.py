@@ -6,7 +6,6 @@ import numpy as np
 with open('Customer_Purchase_model1.pkl', 'rb') as file:
     pipeline = pickle.load(file)
 
-def main():
     st.title("Customer Purchase Prediction")
 
     # Input fields
@@ -29,7 +28,5 @@ def main():
         prediction = pipeline.predict(input_data)
         st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
 
-if __name__ == "__main__":
-    main()
 
 
