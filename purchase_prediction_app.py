@@ -1,11 +1,18 @@
 import streamlit as st
 import pickle
 import numpy as np
+from sklearn.exceptions import NotFittedError
 
 # Load the trained pipeline
-with open('Customer_Purchase_model1.pkl', 'rb') as file:
-    pipeline = pickle.load(file)
+try:
+    with open('Customer_Purchase_model1.pkl', 'rb') as file:
+        pipeline = pickle.load(file)
+except FileNotFoundError:
+    st.error("Model file not found. Please check the file path.")
+except pickle.UnpicklingError:
+    st.error("Error loading the model. The file might be corrupted.")
 
+def main():
     st.title("Customer Purchase Prediction")
 
     # Input fields
@@ -25,8 +32,17 @@ with open('Customer_Purchase_model1.pkl', 'rb') as file:
 
     # Prediction
     if st.button('Predict'):
-        prediction = pipeline.predict(input_data)
-        st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
+        try:
+            prediction = pipeline.predict(input_data)
+            st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
+        except NotFittedError:
+            st.error("The model is not fitted yet. Please fit the model before making predictions.")
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
+
 
 
 
