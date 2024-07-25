@@ -2,9 +2,8 @@
 import streamlit as st
 import pickle
 import numpy as np
-from sklearn.exceptions import NotFittedError
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+from sklearn.exceptions import NotFittedError
 
 # Load the trained pipeline
 try:
@@ -29,9 +28,14 @@ def main():
     loyalty_program = st.selectbox('Loyalty Program', options=[0, 1], format_func=lambda x: 'Yes' if x == 1 else 'No')
     discounts_availed = st.number_input('Discounts Availed', min_value=0, max_value=5, value=0)
 
-    # Create input data
-    input_data = np.array([[age, gender, annual_income, number_of_purchases, product_category,
-                            time_spent_on_website, loyalty_program, discounts_availed]])
+    # Define the column names based on the features used in training
+    columns = ['Age', 'Gender', 'AnnualIncome', 'NumberOfPurchases', 'ProductCategory',
+               'TimeSpentOnWebsite', 'LoyaltyProgram', 'DiscountsAvailed']
+
+    # Create input data as a DataFrame with column names
+    input_data = pd.DataFrame([[age, gender, annual_income, number_of_purchases, product_category,
+                                time_spent_on_website, loyalty_program, discounts_availed]],
+                              columns=columns)
 
     # Prediction
     if st.button('Predict'):
@@ -40,8 +44,6 @@ def main():
             st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
         except NotFittedError:
             st.error("The model is not fitted yet. Please fit the model before making predictions.")
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     main()
