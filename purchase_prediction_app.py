@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 
 # Load the trained pipeline
 try:
-    with open('Customer_Purchase_model1.pkl', 'rb') as file:
+    with open('Customer_Purchase_model2.pkl', 'rb') as file:
         pipeline = pickle.load(file)
 except FileNotFoundError:
     st.error("Model file not found. Please check the file path.")
@@ -32,8 +32,6 @@ def main():
     # Create input data
     input_data = np.array([[age, gender, annual_income, number_of_purchases, product_category,
                             time_spent_on_website, loyalty_program, discounts_availed]])
-    scaler=StandardScaler()
-    scaler.fit_transform(input_data)
 
     # Prediction
     if st.button('Predict'):
