@@ -39,10 +39,6 @@ def main():
         
         prediction = model.predict(scaled_input_data)
         st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
-        except Exception as e:
-            st.error(f"Error during prediction: {e}")
-    else:
-        st.error("Model or scaler not loaded correctly.")
 
 if __name__ == "__main__":
     main()
