@@ -1,16 +1,17 @@
 import streamlit as st
 import pickle
 import numpy as np
-from sklearn.exceptions import NotFittedError
 
-# Load the trained pipeline
+# Load the trained model and scaler
 try:
-    with open('Customer_Purchase_model1.pkl', 'rb') as file:
-        pipeline = pickle.load(file)
-except FileNotFoundError:
-    st.error("Model file not found. Please check the file path.")
-except pickle.UnpicklingError:
-    st.error("Error loading the model. The file might be corrupted.")
+    with open('Customer_Purchase_model.pkl', 'rb') as model_file:
+        model = pickle.load(model_file)
+    with open('Customer_Scaler.pkl', 'rb') as scaler_file:
+        scaler = pickle.load(scaler_file)
+except Exception as e:
+    st.error(f"Error loading the model or scaler: {e}")
+    model = None
+    scaler = None
 
 def main():
     st.title("Customer Purchase Prediction")
@@ -30,18 +31,23 @@ def main():
     input_data = np.array([[age, gender, annual_income, number_of_purchases, product_category,
                             time_spent_on_website, loyalty_program, discounts_availed]])
 
-    # Prediction
-    if st.button('Predict'):
-        try:
-            prediction = pipeline.predict(input_data)
-            st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
-        except NotFittedError:
-            st.error("The model is not fitted yet. Please fit the model before making predictions.")
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
+    if scaler is not None and model is not None:
+        # Scale input data
+        scaled_input_data = scaler.transform(input_data)
+
+        # Prediction
+        if st.button('Predict'):
+            try:
+                prediction = model.predict(scaled_input_data)
+                st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
+            except Exception as e:
+                st.error(f"Error during prediction: {e}")
+    else:
+        st.error("Model or scaler not loaded correctly.")
 
 if __name__ == "__main__":
     main()
+
 
 
 
