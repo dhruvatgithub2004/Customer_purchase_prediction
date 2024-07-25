@@ -31,15 +31,14 @@ def main():
     input_data = np.array([[age, gender, annual_income, number_of_purchases, product_category,
                             time_spent_on_website, loyalty_program, discounts_availed]])
 
-    if scaler is not None and model is not None:
-        try:
-            # Scale input data
-            scaled_input_data = scaler.transform(input_data)
+
+    scaled_input_data = scaler.transform(input_data)
             
             # Prediction
-            if st.button('Predict'):
-                prediction = model.predict(scaled_input_data)
-                st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
+    if st.button('Predict'):
+        
+        prediction = model.predict(scaled_input_data)
+        st.write('Prediction:', 'Yes' if prediction[0] == 1 else 'No')
         except Exception as e:
             st.error(f"Error during prediction: {e}")
     else:
